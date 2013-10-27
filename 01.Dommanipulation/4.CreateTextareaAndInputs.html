@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <script>
+        var documentFragment = document.createDocumentFragment();
+
+        var textAreaToAdd = document.createElement('textarea');
+        textAreaToAdd.id = 'textAreaToAdd';
+
+        var inputForFontColor = document.createElement('input');
+        inputForFontColor.id = 'inputForFontColor';
+        inputForFontColor.type = 'color';
+        inputForFontColor.onchange = enterFontColor;
+
+        var inputForBackgroundColor = document.createElement('input');
+        inputForBackgroundColor.id = 'inputForBackgroundColor';
+        inputForBackgroundColor.type = 'color';
+        inputForBackgroundColor.onchange = enterBackgroundColor;
+
+        documentFragment.appendChild(textAreaToAdd);
+        documentFragment.appendChild(inputForFontColor);
+        documentFragment.appendChild(inputForBackgroundColor);
+        document.body.appendChild(documentFragment);
+
+        function enterFontColor() {
+            textAreaToAdd.style.color = document.getElementById('inputForFontColor').value;
+            return textAreaToAdd.style.color;
+        }
+
+        function enterBackgroundColor() {
+            textAreaToAdd.style.backgroundColor = document.getElementById('inputForBackgroundColor').value;
+            return textAreaToAdd.style.backgroundColor;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script>
+        if (!document.querySelector || !document.querySelectorAll) {
+            document.querySelectorAll = function (selector) {
+                if (selector[0] === '#') {
+                    return document.getElementById(selector.substr(1));
+                }
+                else if (selector[0] === '.') {
+                    return document.getElementsByClassName(selector.substr(1));
+                }
+                else {
+                    return document.getElementsByTagName(selector);
+                }
+            }
+
+            document.querySelector = function (selector) {
+                return document.getElementById(selector.substr(1));
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="first">Siabonga Nomwete</div>
+    <div>Bash mi dago</div>
+    <div>Upal po balsamaci</div>
+    <script>
+        var allDivs = document.querySelectorAll("div");
+        
+        for (var i = 0; i < allDivs.length; i++) {
+            allDivs[i].style.backgroundColor = 'green';
+            allDivs[i].style.color = 'blue';
+        }
+
+        var firstDiv = document.querySelector("#first");
+        firstDiv.style.color = 'red';
+    </script>
+</body>
+</html>

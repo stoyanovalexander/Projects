@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <script>
+        var divsCount = getDivsCount();
+        var divsFragment = document.createDocumentFragment();
+
+        for (var i = 0; i < divsCount; i++) {
+            var div = document.createElement("div");
+
+            div.style.width = getRandomInt(20, 100) + 'px';
+            div.style.height = getRandomInt(20, 100) + 'px';
+
+            div.style.backgroundColor = getRandomColor();
+            div.style.color = getRandomColor();
+            div.style.borderColor = getRandomColor();
+
+            div.style.position = "absolute";
+            div.style.top = getRandomInt(0, 77) + '%';
+            div.style.left = getRandomInt(0, 77) + '%';
+
+            div.style.borderRadius = getRandomInt(0, 200) + '%';
+            div.style.borderWidth = getRandomInt(1, 20) + 'px';
+
+            div.style.textAlign = "center";
+
+            var strong = document.createElement("strong");
+            strong.innerText = "div";
+            div.appendChild(strong);
+
+            divsFragment.appendChild(div);
+        }
+
+        document.body.appendChild(divsFragment);
+
+        function getDivsCount() {
+            var divsCount = getRandomInt(1,10);
+            return divsCount;
+        }
+
+    function getRandomColor() {
+        return 'rgba(' + [
+            getRandomInt(0, 255),
+            getRandomInt(0, 255),
+            getRandomInt(0, 255),
+            getRandomInt(1, 10) / 10
+        ].join(', ') + ')';
+    }
+	
+	function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min; // Returns a random number between min and max
+        }
+    </script>
+</body>
+</html>

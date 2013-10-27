@@ -1,0 +1,3 @@
+TSQL - Transact SQL(structured Query Language). 
+Standart language used in MS SQL Server, which 
+suport if statements, loops and exceptions.

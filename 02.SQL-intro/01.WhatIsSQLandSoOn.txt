@@ -1,0 +1,4 @@
+SQL-Structured Query  Language
+DML-Data Manipulation Language
+DDL-Data Definition Language
+SQL(comands)- select, insert, update, delete
