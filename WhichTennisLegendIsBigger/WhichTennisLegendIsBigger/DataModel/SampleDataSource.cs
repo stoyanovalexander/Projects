@@ -19,7 +19,6 @@ using System.Globalization;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
-
 // The data model defined by this file serves as a representative example of a strongly-typed
 // model that supports notification when members are added, removed, or modified.  The property
 // names chosen coincide with data bindings in the standard item templates.
