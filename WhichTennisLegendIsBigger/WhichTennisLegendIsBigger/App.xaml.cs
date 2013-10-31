@@ -69,6 +69,8 @@ namespace WhichTennisLegendIsBigger
                     }
                 }
 
+                var _Helper = new Flyouts.SettingsHelper();
+                _Helper.AddCommand<Flyouts.PrivicyPolicy>("Privacy Policy");
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }

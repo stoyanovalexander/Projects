@@ -29,6 +29,16 @@ namespace WhichTennisLegendIsBigger
         public SplitPage()
         {
             this.InitializeComponent();
+            this.SizeChanged += (a, b) =>
+            {
+                ApplicationViewState views = ApplicationView.Value;
+                if (views.ToString().ToLower() == "snapped")
+                {
+                    this.Frame.Navigate(typeof(SnappedPage));
+                }
+                //VisualStateManager.GoToState(this, views.ToString(), false);
+
+            };
         }
 
         #region Page state management
@@ -44,8 +54,8 @@ namespace WhichTennisLegendIsBigger
         /// session.  This will be null the first time a page is visited.</param>
         protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
-            // TODO: Create an appropriate data model for your problem domain to replace the sample data
-            var group = SampleDataSource.GetGroup((String)navigationParameter);
+            // TODO: Create an appropriate data model for your problem domain to replace the Tennis data
+            var group = TennisDataSource.GetGroup((String)navigationParameter);
             this.DefaultViewModel["Group"] = group;
             this.DefaultViewModel["Items"] = group.Items;
 
@@ -64,7 +74,7 @@ namespace WhichTennisLegendIsBigger
                 // Restore the previously saved state associated with this page
                 if (pageState.ContainsKey("SelectedItem") && this.itemsViewSource.View != null)
                 {
-                    var selectedItem = SampleDataSource.GetItem((String)pageState["SelectedItem"]);
+                    var selectedItem = TennisDataSource.GetItem((String)pageState["SelectedItem"]);
                     this.itemsViewSource.View.MoveCurrentTo(selectedItem);
                 }
             }
@@ -80,7 +90,7 @@ namespace WhichTennisLegendIsBigger
         {
             if (this.itemsViewSource.View != null)
             {
-                var selectedItem = (SampleDataItem)this.itemsViewSource.View.CurrentItem;
+                var selectedItem = (TennisDataItem)this.itemsViewSource.View.CurrentItem;
                 if (selectedItem != null) pageState["SelectedItem"] = selectedItem.UniqueId;
             }
         }

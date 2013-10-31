@@ -29,6 +29,16 @@ namespace WhichTennisLegendIsBigger
         public ItemsPage()
         {
             this.InitializeComponent();
+            this.SizeChanged += (a, b) =>
+            {
+                ApplicationViewState views = ApplicationView.Value;
+                if (views.ToString().ToLower() == "snapped")
+                {
+                    this.Frame.Navigate(typeof(SnappedPage));
+                }
+                //VisualStateManager.GoToState(this, views.ToString(), false);
+
+            };
         }
 
         /// <summary>
@@ -42,9 +52,9 @@ namespace WhichTennisLegendIsBigger
         /// session.  This will be null the first time a page is visited.</param>
         protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
-            // TODO: Create an appropriate data model for your problem domain to replace the sample data
-            var sampleDataGroups = SampleDataSource.GetGroups((String)navigationParameter);
-            this.DefaultViewModel["Items"] = sampleDataGroups;
+            // TODO: Create an appropriate data model for your problem domain to replace the Tennis data
+            var TennisDataGroups = TennisDataSource.GetGroups((String)navigationParameter);
+            this.DefaultViewModel["Items"] = TennisDataGroups;
         }
 
         /// <summary>
@@ -57,7 +67,7 @@ namespace WhichTennisLegendIsBigger
         {
             // Navigate to the appropriate destination page, configuring the new page
             // by passing required information as a navigation parameter
-            var groupId = ((SampleDataGroup)e.ClickedItem).UniqueId;
+            var groupId = ((TennisDataGroup)e.ClickedItem).UniqueId;
             this.Frame.Navigate(typeof(SplitPage), groupId);
         }
     }
