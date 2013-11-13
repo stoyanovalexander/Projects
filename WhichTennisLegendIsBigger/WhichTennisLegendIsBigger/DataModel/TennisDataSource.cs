@@ -24,6 +24,12 @@ using Windows.UI.Popups;
 using Windows.Networking;
 using Windows.Networking.Connectivity;
 
+// The Project extracts data from wikipedia. Extract from there info for all tennis players with more than 5 grand slam titles.
+// By this info compare by differnt components each two of this player one vs one by choice of the user, and on the end shows who
+// of them is bigger. First time consume the services and starting about 10 seconds. After that use local storage and saves 
+//there info. The info is changed four times each year after the four tournaments. The application check and consume services again
+// only if there are need to do it. So starts slow only four times in the year and the first time. It works and when there are no
+// internet with the last time saved data in the local storage. 
 namespace WhichTennisLegendIsBigger.Data
 {
     /// <summary>
@@ -122,75 +128,43 @@ namespace WhichTennisLegendIsBigger.Data
         public DateTime CheckNearestDate(DateTime[] changeInfoDate, DateTime? fromFile)
         {
             var currDate = DateTime.Now;
+            // If curent data has the value from the rows under the application will starting near 10 seconds becouse will be parsing
+            //the new data from internet from next time when start the application will work fast again with the local storage data 
+            //!!! Must make the same change and in the: OverwriteInfo() method
+
+            currDate = new DateTime(DateTime.Now.Year+1, 2, 8);
+            //currDate = new DateTime(DateTime.Now.Year+1, 6, 20);
+            //currDate = new DateTime(DateTime.Now.Year+1, 7, 18);
+            //currDate = new DateTime(DateTime.Now.Year+1, 9, 19);
+            //currDate = new DateTime(DateTime.Now.Year+2, 9, 19);
+
+            //The dates of info change
+            //(DateTime.Now.Year, 2, 8);    (DateTime.Now.Year, 6, 20)  (DateTime.Now.Year, 7, 18);  (DateTime.Now.Year, 9, 19);
 
             if (fromFile == null)
             {
-                if (currDate.Month == 1)
-                {
-                    return changeInfoDate[3];
-                }
-
-                if (currDate.Month == 2 && currDate.Day <= 7)
-                {
-                    return changeInfoDate[3];
-                }
-
-                if (currDate.Month == 2 && currDate.Day>7)
+                if ((currDate.Month == 2 && currDate.Day > 7) ||
+                   (currDate.Month > 2 && currDate.Month < 6) ||
+                   (currDate.Month == 6 && currDate.Day <= 19))
                 {
                     return changeInfoDate[0];
                 }
-
-                if (currDate.Month == 3)
-                {
-                    return changeInfoDate[0];
-                }
-
-                if (currDate.Month == 4)
-                {
-                    return changeInfoDate[0];
-                }
-
-                if (currDate.Month == 5)
-                {
-                    return changeInfoDate[0];
-                }
-                if (currDate.Month == 6 && currDate.Day<=19)
-                {
-                    return changeInfoDate[0];
-                }
-
-                if (currDate.Month == 6 && currDate.Day>19)
+                if ((currDate.Month == 6 && currDate.Day > 19) ||
+                   (currDate.Month == 7 && currDate.Day <= 17))
                 {
                     return changeInfoDate[1];
                 }
-
-                if (currDate.Month == 7 && currDate.Day <= 17)
-                {
-                    return changeInfoDate[1];
-                }
-                if (currDate.Month == 7 && currDate.Day > 17)
+                if ((currDate.Month == 7 && currDate.Day > 17) ||
+                  (currDate.Month > 7 && currDate.Month < 9) ||
+                  (currDate.Month == 9 && currDate.Day <= 18))
                 {
                     return changeInfoDate[2];
                 }
-
-                if (currDate.Month == 8)
-                {
-                    return changeInfoDate[2];
-                }
-
-                if (currDate.Month == 9 && currDate.Day <= 18)
-                {
-                    return changeInfoDate[2];
-                }
-                if (currDate.Month == 9 && currDate.Day > 18)
+                else
                 {
                     return changeInfoDate[3];
                 }
 
-                if (currDate.Month == 10 || currDate.Month == 11 || currDate.Month == 12)
-                {
-                    return changeInfoDate[3];
-                }
             }
             else
             {
@@ -201,14 +175,11 @@ namespace WhichTennisLegendIsBigger.Data
                 {
                     return changeInfoDate[0];
                 }
-
                 if ((currDate.Month == 6 && currDate.Day > 19) ||
-                   //(currDate.Month > 6 && currDate.Month < 7) ||
                    (currDate.Month == 7 && currDate.Day <= 17))
                 {
                     return changeInfoDate[1];
                 }
-
                 if ((currDate.Month == 7 && currDate.Day > 17) ||
                   (currDate.Month > 7 && currDate.Month < 9) ||
                   (currDate.Month == 9 && currDate.Day <= 18))
@@ -221,52 +192,67 @@ namespace WhichTennisLegendIsBigger.Data
                     return changeInfoDate[3];
                 }
             }
-
-            return changeInfoDate[0];
         }
 
-        private bool ToBriefInfo(DateTime? fromFile)
+        private bool OverwriteInfo(DateTime? fromFile)
         {
             var currDate = DateTime.Now;
 
-            if (fromFile.Value.Month == 1)
+            // If curent data has the value from the rows under the application will starting near 10 seconds becouse will be parsing
+            //the new data from internet from next time when start the application will work fast again with the local storage data 
+            //!!! Must make the same change and in the: CheckNearestDate() method
+
+            currDate = new DateTime(DateTime.Now.Year+1, 2, 8);
+            //currDate = new DateTime(DateTime.Now.Year+1, 6, 20);
+            //currDate = new DateTime(DateTime.Now.Year+1, 7, 18);
+            //currDate = new DateTime(DateTime.Now.Year+1, 9, 19);
+            //currDate = new DateTime(DateTime.Now.Year+2, 9, 19);
+
+            //The dates of info change
+            //(DateTime.Now.Year, 2, 8);    (DateTime.Now.Year, 6, 20)  (DateTime.Now.Year, 7, 18);  (DateTime.Now.Year, 9, 19);
+
+            if (fromFile.Value.Month == 2 && fromFile.Value.Year==currDate.Year)
             {
-                if ((currDate.Month == 2 && currDate.Day > 6) ||
-                    (currDate.Month > 2 && currDate.Month < 6) ||
+                if ((currDate.Month >= 2 && currDate.Month < 6) ||
                     (currDate.Month == 6 && currDate.Day <= 19))
                 {
                     return false;
                 }
             }
-            if (fromFile.Value.Month == 6)
+            if (fromFile.Value.Month == 6 && fromFile.Value.Year == currDate.Year)
             {
-                if ((currDate.Month == 6 && currDate.Day > 19) ||
+                if ((currDate.Month == 6)||
                    (currDate.Month == 7 && currDate.Day <= 17))
                 {
                     return false;
                 }
             }
 
-            if (fromFile.Value.Month == 7)
+            if (fromFile.Value.Month == 7 && fromFile.Value.Year == currDate.Year)
             {
-                if ((currDate.Month == 7 && currDate.Day > 17) ||
-                  (currDate.Month > 7 && currDate.Month < 9) ||
+                if ((currDate.Month >= 7 && currDate.Month < 9) ||
                   (currDate.Month == 9 && currDate.Day <= 18))
                 {
                     return false;
                 }
             }
 
-            if (fromFile.Value.Month == 9)
+            if (fromFile.Value.Month == 9 && currDate.Year == fromFile.Value.Year)
             {
-                if ((currDate.Month == 9 && currDate.Day > 18) ||
-                 (currDate.Month > 9 && currDate.Month <= 12) ||
-                 ((currDate.Month == 1) || (currDate.Month==2 && currDate.Day <= 6)))
+                if (currDate.Month >= 9 && currDate.Month <= 12)
                 {
                     return false;
                 }
             }
 
+            if (fromFile.Value.Month == 9 && currDate.Year == fromFile.Value.Year + 1)
+            {
+                if (((currDate.Month == 1) ||
+                 (currDate.Month == 2 && currDate.Day <= 7)))
+                {
+                    return false;
+                }
+            }
             return true;
         }
 
@@ -282,10 +268,10 @@ namespace WhichTennisLegendIsBigger.Data
             string[,] theFinalResultComparation = null;
             int[] theTitles = null;
 
-            DateTime australianOpen = new DateTime(DateTime.Now.Year, 2, 7);
-            DateTime frenchOpen = new DateTime(DateTime.Now.Year, 6, 19);
-            DateTime winbledon = new DateTime(DateTime.Now.Year, 7, 17);
-            DateTime usOpen = new DateTime(DateTime.Now.Year, 9, 18);
+            DateTime australianOpen = new DateTime(DateTime.Now.Year+1, 2, 7); //For tasting change with: DateTime.Now.Year+1
+            DateTime frenchOpen = new DateTime(DateTime.Now.Year+1, 6, 19);  //For tasting change with: DateTime.Now.Year+1
+            DateTime winbledon = new DateTime(DateTime.Now.Year+1, 7, 17);  //For tasting change with: DateTime.Now.Year+1
+            DateTime usOpen = new DateTime(DateTime.Now.Year+1, 9, 18);       //For tasting change with: DateTime.Now.Year+1
 
             StorageFile dateFile = null;
             var localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
@@ -297,15 +283,15 @@ namespace WhichTennisLegendIsBigger.Data
             {
             }
 
-            DateTime? nullDate = null;
+            DateTime? overwriteDate = null;
 
             if (dateFile != null)
             {
                 var result = await Windows.Storage.FileIO.ReadTextAsync(dateFile);
-                nullDate = DateTime.Parse(result);
+                overwriteDate = DateTime.Parse(result);
             }
 
-            DateTime[] years = new DateTime[]
+            DateTime[] tournaments = new DateTime[]
             {
               australianOpen,
               frenchOpen,
@@ -313,7 +299,7 @@ namespace WhichTennisLegendIsBigger.Data
               usOpen,
             };
 
-            if (nullDate != null && !this.ToBriefInfo(nullDate))
+            if (overwriteDate != null && !this.OverwriteInfo(overwriteDate))
             {
                 var namesStr = await this.ReadDataFromLocalFolder("names");
                 var descriptionStr = await this.ReadDataFromLocalFolder("desc");
@@ -334,6 +320,9 @@ namespace WhichTennisLegendIsBigger.Data
                 theWinningYearsComparation = JsonConvert.DeserializeObject<string[,]>(winningYearsStr);
                 theTitlesValueComparation = JsonConvert.DeserializeObject<string[,]>(titlesValueStr);
                 theFinalResultComparation = JsonConvert.DeserializeObject<string[,]>(finalResultStr);
+
+                //If uncoment next rows and start the application the local storage will be cleaned and the next starting of 
+                //application wiil be near 10 seconds because will be extracting the data from internet
 
                 //var stFileToCheck = await localFolder.GetFileAsync("names.txt");
                 //await stFileToCheck.DeleteAsync();
@@ -359,6 +348,7 @@ namespace WhichTennisLegendIsBigger.Data
             {
                 
                 {
+                    //SERVICES CONSUMING
                     //http://04servicesofwhichtenisistisbigger.apphb.com/
 
                     var please = MakeAsyncRequest("http://04servicesofwhichtenisistisbigger.apphb.com/api/Name");
@@ -415,29 +405,9 @@ namespace WhichTennisLegendIsBigger.Data
 
                     this.WriteToLocalFolder("finalResult", finalResultStr);
 
-                    var date = this.CheckNearestDate(years, nullDate);
+                    var date = this.CheckNearestDate(tournaments, overwriteDate);
 
                     this.WriteToLocalFolder("date", date.ToString());
-
-                    // NOT SO IMPORTANT
-                  //var stFileToCheck = await localFolder.GetFileAsync("names.txt");
-                  //await stFileToCheck.DeleteAsync();
-                  //stFileToCheck = await localFolder.GetFileAsync("desc.txt");
-                  //await stFileToCheck.DeleteAsync();
-                  //stFileToCheck = await localFolder.GetFileAsync("img.txt");
-                  //await stFileToCheck.DeleteAsync();
-                  //stFileToCheck = await localFolder.GetFileAsync("title.txt");
-                  //await stFileToCheck.DeleteAsync();
-                  //stFileToCheck = await localFolder.GetFileAsync("titleCount.txt");
-                  //await stFileToCheck.DeleteAsync();
-                  //stFileToCheck = await localFolder.GetFileAsync("timeBetween.txt");
-                  //await stFileToCheck.DeleteAsync();
-                  //stFileToCheck = await localFolder.GetFileAsync("winningYears.txt");
-                  //await stFileToCheck.DeleteAsync();
-                  //stFileToCheck = await localFolder.GetFileAsync("titlesValue.txt");
-                  //await stFileToCheck.DeleteAsync();
-                  //stFileToCheck = await localFolder.GetFileAsync("finalResult.txt");
-                  //await stFileToCheck.DeleteAsync();
                 }
             }
 
